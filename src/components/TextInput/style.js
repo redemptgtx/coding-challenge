@@ -19,6 +19,9 @@ const InputLabel = styled.label`
 const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
+  &:not(:last-child) {
+    margin-bottom: 20px;
+  }
 `;
 
 export { TextInput, InputLabel, InputContainer };

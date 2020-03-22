@@ -1,28 +1,26 @@
 import React from "react";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
+import LinkListPage from "./containers/LinkListPage";
+import AddLinkPage from "./containers/AddLinkPage";
 import Header from "./components/Header";
 import Container from "./components/Container";
-import LinkList from "./components/LinkList";
-import LinkItem from "./components/LinkItem";
-import AddLink from "./components/AddLink";
-import Pagination from "./components/Pagination";
-import Toast from "./components/Toast";
-import TextInput from "./components/TextInput";
 
 function App() {
   return (
-    <Container>
-      <Header />
-      <AddLink />
-      <LinkList>
-        <LinkItem />
-        <LinkItem />
-        <LinkItem />
-      </LinkList>
-      <Pagination />
-      <Toast />
-      <TextInput label="Test" placeholder="test" />
-    </Container>
+    <Router>
+      <Container>
+        <Header />
+        <Switch>
+          <Route path="/add-link">
+            <AddLinkPage />
+          </Route>
+          <Route path="/">
+            <LinkListPage />
+          </Route>
+        </Switch>
+      </Container>
+    </Router>
   );
 }
 
