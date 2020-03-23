@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
+import moment from "moment";
 
 import { setData, getData } from "utils/storage";
 import { generateId } from "utils/helpers";
@@ -22,7 +23,14 @@ function AddLinkPage() {
 
   function saveLink() {
     const links = getData("links");
-    const newLinkData = { key: generateId(), linkName, linkURL, voteCount: 0 };
+    const newLinkData = {
+      key: generateId(),
+      linkName,
+      linkURL,
+      voteCount: 0,
+      createdAt: moment(),
+      updatedAt: null
+    };
     if (links) {
       links.push(newLinkData);
       setData(links, "links");

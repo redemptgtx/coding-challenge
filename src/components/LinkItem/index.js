@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FaArrowDown, FaArrowUp, FaMinus } from "react-icons/fa";
-import { findIndex, remove } from "lodash";
+import { remove } from "lodash";
+import moment from "moment";
 
 import { setData, getData } from "utils/storage";
 
@@ -18,12 +19,14 @@ function LinkItem({ link }) {
   function upVote() {
     const newLinkData = link;
     newLinkData.voteCount = newLinkData.voteCount + 1;
+    newLinkData.updatedAt = moment();
     updateLink(newLinkData);
   }
 
   function downVote() {
     const newLinkData = link;
     newLinkData.voteCount = newLinkData.voteCount - 1;
+    newLinkData.updatedAt = moment();
     updateLink(newLinkData);
   }
 

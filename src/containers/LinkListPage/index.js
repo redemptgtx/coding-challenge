@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import moment from "moment";
 
 import { getData } from "utils/storage";
 
@@ -11,6 +12,7 @@ import SelectInput from "components/SelectInput";
 function LinkListPage() {
   const [links, setLinks] = useState([]);
   const [page, setPage] = useState(1);
+  const [orderCriteria, setOrderCriteria] = useState("created");
 
   useEffect(() => {
     getLinkData();
@@ -18,7 +20,11 @@ function LinkListPage() {
 
   function getLinkData() {
     const linkData = getData("links");
-    setLinks(linkData);
+    const sortedArray = linkData.sort((a, b) => {
+      return moment(b.createdAt).format("X") - moment(a.createdAt).format("X");
+    });
+
+    setLinks(sortedArray);
   }
 
   function renderLinks() {
@@ -33,7 +39,7 @@ function LinkListPage() {
   return (
     <>
       <AddLink />
-      <SelectInput />
+      <SelectInput onChange={setOrderCriteria} />
       <LinkList>{renderLinks()}</LinkList>
       {links.length > 5 && (
         <Pagination
