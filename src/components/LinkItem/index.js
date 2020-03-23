@@ -3,7 +3,7 @@ import { FaArrowDown, FaArrowUp, FaMinus } from "react-icons/fa";
 import { remove } from "lodash";
 import moment from "moment";
 
-import { setData, getData } from "utils/storage";
+import { getData } from "utils/storage";
 
 import DeleteModal from "../Modal";
 
