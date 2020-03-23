@@ -38,8 +38,8 @@ function LinkListPage() {
 
   function sortLinks(dataToSort) {
     const sorted = dataToSort.sort((a, b) => {
-      if (a.voteCount > b.voteCount) return -1;
-      if (a.voteCount < b.voteCount) return 1;
+      if (a.voteCount > b.voteCount) return orderCriteria === "asc" ? -1 : 1;
+      if (a.voteCount < b.voteCount) return orderCriteria === "asc" ? 1 : -1;
 
       if (moment(a.updatedAt).format("X") > moment(b.updatedAt).format("X"))
         return -1;
@@ -51,10 +51,16 @@ function LinkListPage() {
     setLinks(sorted);
   }
 
+  function handleCriteriaChange(event) {
+    const { value } = event.target;
+    setOrderCriteria(value);
+    sortLinks(links);
+  }
+
   return (
     <>
       <AddLink />
-      <SelectInput onChange={setOrderCriteria} />
+      <SelectInput onChange={handleCriteriaChange} />
       <LinkList>{renderLinks()}</LinkList>
       {links.length > 5 && (
         <Pagination
