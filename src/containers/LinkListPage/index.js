@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
 
-import { getData } from "utils/storage";
+import { getData, setData } from "utils/storage";
 
 import LinkList from "components/LinkList";
 import LinkItem from "components/LinkItem";
@@ -32,8 +32,23 @@ function LinkListPage() {
     const offset = (page - 1) * pageLimit;
     const linksToBeShown = links.slice(offset, offset + pageLimit);
     return linksToBeShown.map(item => {
-      return <LinkItem link={item} key={item.key} />;
+      return <LinkItem link={item} key={item.key} sortLinks={sortLinks} />;
     });
+  }
+
+  function sortLinks(dataToSort) {
+    const sorted = dataToSort.sort((a, b) => {
+      if (a.voteCount > b.voteCount) return -1;
+      if (a.voteCount < b.voteCount) return 1;
+
+      if (moment(a.updatedAt).format("X") > moment(b.updatedAt).format("X"))
+        return -1;
+      if (moment(a.updatedAt).format("X") < moment(b.updatedAt).format("X"))
+        return 1;
+    });
+
+    setData(sorted);
+    setLinks(sorted);
   }
 
   return (

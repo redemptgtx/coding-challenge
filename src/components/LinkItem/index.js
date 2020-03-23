@@ -9,7 +9,7 @@ import DeleteModal from "../Modal";
 
 import * as S from "./style";
 
-function LinkItem({ link }) {
+function LinkItem({ link, sortLinks }) {
   const [isModalOpen, setModalStatus] = useState(false);
 
   function toggleModal() {
@@ -39,7 +39,7 @@ function LinkItem({ link }) {
 
     const dataToSet = [...dataWithoutOldLink, newLinkData];
 
-    setData(dataToSet, "links");
+    sortLinks(dataToSet);
   }
 
   function getAllLinks() {
