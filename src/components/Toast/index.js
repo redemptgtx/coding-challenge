@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.min.css";
 function ToastMessage() {
   return (
     <>
-      <ToastContainer />
+      <ToastContainer hideProgressBar={true} autoClose={2500} />
     </>
   );
 }

@@ -7,6 +7,7 @@ const Pagination = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-top: 20px;
+  margin-bottom: 30px;
 `;
 
 const PrevOrNext = styled(TransparentButton)`
