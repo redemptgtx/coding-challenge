@@ -1,21 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import { FaArrowDown, FaArrowUp, FaMinus } from "react-icons/fa";
 import { remove } from "lodash";
 import moment from "moment";
 
 import { getData } from "utils/storage";
 
-import DeleteModal from "../Modal";
-
 import * as S from "./style";
 
-function LinkItem({ link, sortLinks }) {
-  const [isModalOpen, setModalStatus] = useState(false);
-
-  function toggleModal() {
-    setModalStatus(!isModalOpen);
-  }
-
+function LinkItem({ link, sortLinks, toggleModal }) {
   function upVote() {
     const newLinkData = link;
     newLinkData.voteCount = newLinkData.voteCount + 1;
@@ -73,7 +65,6 @@ function LinkItem({ link, sortLinks }) {
       <S.RemoveButton onClick={toggleModal}>
         <FaMinus />
       </S.RemoveButton>
-      <DeleteModal isModalOpen={isModalOpen} toggleModal={toggleModal} />
     </S.LinkItem>
   );
 }

@@ -1,24 +1,18 @@
 import React from "react";
-import Modal from "react-modal";
 import { toast } from "react-toastify";
 
-Modal.setAppElement("#root");
+import * as S from "./style";
 
-function DeleteModal({ isModalOpen, toggleModal }) {
+function DeleteModal({ isModalOpen, toggleModal, linkName, linkId }) {
   function notify() {
     toast("Test");
   }
 
   return (
     <>
-      <Modal
-        isOpen={isModalOpen}
-        onRequestClose={toggleModal}
-        contentLabel="Example Modal"
-      >
-        <button onClick={toggleModal}>close</button>
-        <button onClick={notify}>Notify</button>
-      </Modal>
+      <S.Modal isOpen={isModalOpen}>
+        <S.ModalContent></S.ModalContent>
+      </S.Modal>
     </>
   );
 }

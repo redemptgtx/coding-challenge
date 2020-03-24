@@ -8,23 +8,32 @@ import LinkItem from "components/LinkItem";
 import AddLink from "components/AddLink";
 import Pagination from "components/Pagination";
 import SelectInput from "components/SelectInput";
+import DeleteModal from "components/Modal";
 
 function LinkListPage() {
   const [links, setLinks] = useState([]);
   const [page, setPage] = useState(1);
-  const [orderCriteria, setOrderCriteria] = useState("created");
+  const [orderCriteria, setOrderCriteria] = useState("");
+  const [isModalOpen, setModalStatus] = useState(false);
 
   useEffect(() => {
     getLinkData();
   }, []);
 
+  useEffect(() => {
+    if (orderCriteria !== "") {
+      sortLinks(links);
+    }
+  }, [orderCriteria, links, sortLinks]);
+
   function getLinkData() {
     const linkData = getData("links");
     const sortedArray = linkData.sort((a, b) => {
-      return moment(b.createdAt).format("X") - moment(a.createdAt).format("X");
+      return moment(a.createdAt).format("X") - moment(b.createdAt).format("X");
     });
 
     setLinks(sortedArray);
+    setData(sortedArray, "links");
   }
 
   function renderLinks() {
@@ -32,14 +41,31 @@ function LinkListPage() {
     const offset = (page - 1) * pageLimit;
     const linksToBeShown = links.slice(offset, offset + pageLimit);
     return linksToBeShown.map(item => {
-      return <LinkItem link={item} key={item.key} sortLinks={sortLinks} />;
+      return (
+        <LinkItem
+          link={item}
+          key={item.key}
+          sortLinks={sortLinks}
+          toggleModal={toggleModal}
+        />
+      );
     });
   }
 
   function sortLinks(dataToSort) {
+    const sorted =
+      orderCriteria === "asc"
+        ? sortAscending(dataToSort)
+        : sortDescending(dataToSort);
+
+    setData(sorted, "links");
+    setLinks(sorted);
+  }
+
+  function sortAscending(dataToSort) {
     const sorted = dataToSort.sort((a, b) => {
-      if (a.voteCount > b.voteCount) return orderCriteria === "asc" ? -1 : 1;
-      if (a.voteCount < b.voteCount) return orderCriteria === "asc" ? 1 : -1;
+      if (a.voteCount > b.voteCount) return 1;
+      if (a.voteCount < b.voteCount) return -1;
 
       if (moment(a.updatedAt).format("X") > moment(b.updatedAt).format("X"))
         return -1;
@@ -47,14 +73,35 @@ function LinkListPage() {
         return 1;
     });
 
-    setData(sorted);
-    setLinks(sorted);
+    return sorted;
+  }
+
+  function sortDescending(dataToSort) {
+    const sorted = dataToSort.sort((a, b) => {
+      if (a.voteCount > b.voteCount) return -1;
+      if (a.voteCount < b.voteCount) return 1;
+
+      if (moment(a.updatedAt).format("X") > moment(b.updatedAt).format("X"))
+        return -1;
+      if (moment(a.updatedAt).format("X") < moment(b.updatedAt).format("X"))
+        return 1;
+    });
+
+    return sorted;
   }
 
   function handleCriteriaChange(event) {
     const { value } = event.target;
+    console.log(value);
     setOrderCriteria(value);
-    sortLinks(links);
+  }
+
+  function handleRemove() {
+    toggleModal();
+  }
+
+  function toggleModal() {
+    setModalStatus(!isModalOpen);
   }
 
   return (
@@ -69,6 +116,7 @@ function LinkListPage() {
           setPage={setPage}
         />
       )}
+      <DeleteModal isModalOpen={isModalOpen} toggleModal={toggleModal} />
     </>
   );
 }
